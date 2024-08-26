@@ -1,0 +1,56 @@
+<div class="container">
+  <mat-card>
+    <mat-card-title>Cadastre-se!</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="signupForm">
+        <mat-form-field appearance="outline">
+          <mat-label>Nome</mat-label>
+          <input matInput formControlName="name" placeholder="Nome" required>
+          <mat-error *ngIf="signupForm.get('name')?.invalid && signupForm.get('name')?.touched">
+            Por favor, insira um nome válido.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" placeholder="Email" required>
+          <mat-error *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
+            Por favor, insira um email válido.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Senha</mat-label>
+          <input matInput type="{{ hidePassword ? 'password' : 'text'}}" formControlName="password" placeholder="Senha"
+            required>
+
+          <button mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+
+          <mat-error *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched">
+            Por favor, insira uma senha válida.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Confirmar Senha</mat-label>
+          <input matInput type="{{ hidePassword ? 'password' : 'text'}}" formControlName="confirmPassword"
+            placeholder="Senha" required>
+
+          <button mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+
+          <mat-error *ngIf="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched">
+            Por favor, insira uma senha válida.
+          </mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="signupForm.invalid"
+          (click)="onSubmit()">Cadastre-se!</button>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
