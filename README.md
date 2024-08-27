@@ -18,7 +18,7 @@
 
 ### Backend
 
-- **Spring Boot**: Um framework baseado em Java para construir aplicações empresariais com facilidade.
+- **Spring Boot**: Um framework baseado em Java para construir aplicações com facilidade.
 - **Spring Security**: Garante autenticação e autorização seguras de usuários.
 - **Spring Data JPA**: Simplifica as interações com o banco de dados usando a API de Persistência Java (JPA).
 
