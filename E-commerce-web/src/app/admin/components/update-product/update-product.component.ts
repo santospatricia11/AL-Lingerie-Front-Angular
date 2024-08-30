@@ -63,7 +63,7 @@ export class UpdateProductComponent {
   getProductById(){
     this.adminService.getProductById(this.productId).subscribe(res=>{
       this.productForm.patchValue(res);
-      this.existingImage = 'data:image/jpeg;base64,' + res.byteImg;
+      this.existingImage = '' + res.byteImg;
     })
   }
 

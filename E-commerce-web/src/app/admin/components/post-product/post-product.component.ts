@@ -1,23 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AdminService } from '../../service/admin.service';
 
 @Component({
   selector: 'app-post-product',
   templateUrl: './post-product.component.html',
-  styleUrls: ['./post-product.component.scss'], // Corrigido o nome da propriedade de styleUrls
+  styleUrls: ['./post-product.component.scss'],
 })
 export class PostProductComponent implements OnInit {
   productForm: FormGroup;
   listOfCategories: any[] = [];
+  imagePreviewUrl: string | null = null;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private snackbar: MatSnackBar,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -26,9 +28,10 @@ export class PostProductComponent implements OnInit {
       name: [null, [Validators.required]],
       price: [null, [Validators.required]],
       description: [null, [Validators.required]],
-      imageUrl: [null, [Validators.required]], // Adicionado o campo imageUrl
+      imageUrl: [null, [Validators.required]], // Campo para link da imagem
     });
     this.getAllCategories();
+    this.loadProductDetails();
   }
 
   getAllCategories(): void {
@@ -37,31 +40,36 @@ export class PostProductComponent implements OnInit {
     });
   }
 
+  loadProductDetails(): void {
+    const productId = this.route.snapshot.paramMap.get('id');
+    if (productId) {
+      this.adminService.getProductById(productId).subscribe((product) => {
+        this.productForm.patchValue(product);
+        this.imagePreviewUrl = product.imageUrl; // Atualizar a URL da imagem
+      });
+    }
+  }
+
   addProduct(): void {
     if (this.productForm.valid) {
-      const productData = {
-        categoryId: this.productForm.get('categoryId').value,
-        name: this.productForm.get('name').value,
-        description: this.productForm.get('description').value,
-        price: this.productForm.get('price').value,
-        imageUrl: this.productForm.get('imageUrl').value,
-      };
+      const productData = this.productForm.value;
 
+      // Enviar o link da imagem diretamente
       this.adminService.addProduct(productData).subscribe({
         next: (res) => {
           if (res.id != null) {
-            this.snackbar.open('Product Posted Successfully!', 'close', {
+            this.snackbar.open('Produto adicionado com sucesso!', 'Fechar', {
               duration: 5000,
             });
             this.router.navigateByUrl('admin/dashboard');
           } else {
-            this.snackbar.open(res.message, 'ERROR', {
+            this.snackbar.open(res.message, 'ERRO', {
               duration: 5000,
             });
           }
         },
         error: (err) => {
-          this.snackbar.open('An error occurred: ' + err.message, 'ERROR', {
+          this.snackbar.open('Ocorreu um erro: ' + err.message, 'ERRO', {
             duration: 5000,
           });
         },

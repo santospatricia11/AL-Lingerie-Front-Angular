@@ -27,7 +27,7 @@ export class DashboardComponent {
     this.products = [];
     this.adminService.getAllProducts().subscribe(res => {
       res.forEach(element => {
-        element.processedImg = 'data:image/jpeg;base64,' + element.byteImg;
+        element.processedImg = '' + element.byteImg;
         this.products.push(element);
       });
     })
@@ -38,7 +38,7 @@ export class DashboardComponent {
     const title= this.searchProductForm.get('title')!.value;
     this.adminService.getAllProductsByName(title).subscribe(res => {
       res.forEach(element => {
-        element.processedImg = 'data:image/jpeg;base64,' + element.byteImg;
+        element.processedImg = '' + element.byteImg;
         this.products.push(element);
       });
     })

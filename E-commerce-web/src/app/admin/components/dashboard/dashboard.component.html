@@ -11,7 +11,7 @@
 <div class="product-list">
   <mat-card class="product-card" *ngFor="let product of products">
     <div class="product-image">
-      <img [src]="product.processedImg" alt="imagem-do-produto">
+      <img src="{{product.imageUrl}}" alt="imagem-do-produto teste">
     </div>
     <div class="product-details">
       <h2 class="product-name">{{product.name}}</h2>

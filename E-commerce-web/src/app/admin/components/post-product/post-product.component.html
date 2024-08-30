@@ -1,7 +1,7 @@
 <div class="container">
   <h2>Adicionar Produto</h2>
   <form [formGroup]="productForm" (ngSubmit)="addProduct()">
-    <!-- Campo de link da imagem -->
+    <!-- Campo para link da imagem -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Link da Imagem</mat-label>
       <input matInput type="text" placeholder="Link da Imagem" formControlName="imageUrl" />
@@ -11,17 +11,18 @@
     </mat-form-field>
 
     <!-- Visualização da Imagem -->
-    <div *ngIf="productForm.get('imageUrl')?.value">
+    <div *ngIf="productForm.get('imageUrl')?.value || imagePreviewUrl">
       <h3>Pré-visualização da Imagem:</h3>
       <img [src]="productForm.get('imageUrl')?.value" alt="Imagem do Produto"
         style="max-width: 300px; max-height: 300px;">
     </div>
 
+    <!-- Campo para selecionar categoria -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Selecione uma Categoria</mat-label>
-      <mat-select formControlName="categoryId" name="categoryId">
+      <mat-select formControlName="categoryId">
         <mat-option *ngFor="let category of listOfCategories" [value]="category.id">
-          {{category.name}}
+          {{ category.name }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="productForm.get('categoryId')?.hasError('required')">
@@ -29,6 +30,7 @@
       </mat-error>
     </mat-form-field>
 
+    <!-- Outros campos -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Nome</mat-label>
       <input matInput type="text" placeholder="Nome" formControlName="name" />

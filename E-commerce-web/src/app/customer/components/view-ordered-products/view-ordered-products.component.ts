@@ -23,7 +23,7 @@ export class ViewOrderedProductsComponent {
   getOrderedProductDetailsByOrderId(){
     this.customerService.getOrderedProducts(this.orderId).subscribe(res=>{
       res.productDtoList.forEach(element => {
-        element.processedImg = 'data:image/jpeg;base64,'+element.byteImg;
+        element.processedImg = ''+element.byteImg;
         this.ordererdProductDetailsList.push(element);
       });
       this.totalAmount = res.orderAmount;
