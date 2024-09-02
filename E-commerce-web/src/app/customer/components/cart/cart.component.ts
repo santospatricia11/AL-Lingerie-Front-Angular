@@ -48,7 +48,7 @@ export class CartComponent {
     this.customerService.getCartByUserId().subscribe(res => {
       this.order = res;
       res.cartItems.forEach(element => {
-        element.processedImg = '' + element.returnedImage;
+        element.imageUrl = '' + element.imageUrl;
         this.cartItems.push(element);
       });
     })

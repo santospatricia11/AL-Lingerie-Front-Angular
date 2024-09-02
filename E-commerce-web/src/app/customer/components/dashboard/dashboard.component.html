@@ -1,23 +1,38 @@
-<div class="container">
-  <form [formGroup]="formularioBuscaProduto" (ngSubmit)="enviarFormulario()">
-    <mat-form-field appearance="outline">
-      <mat-label>Buscar Produto</mat-label>
-      <input matInput formControlName="titulo" placeholder="Título do Produto">
-      <mat-error *ngIf="formularioBuscaProduto.get('titulo')?.hasError('required')">
-        Este campo é obrigatório
-      </mat-error>
-    </mat-form-field>
-    <button mat-raised-button color="primary" type="submit">Buscar</button>
-  </form>
+<form [formGroup]="searchProductForm" class="search-form" (submit)="submitForm()">
+  <mat-form-field appearance="outline" class="search-input">
+    <mat-label>Digite a palavra-chave para buscar</mat-label>
+    <input matInput formControlName="title">
+    <button mat-button matSuffix color="primary" [disabled]="searchProductForm.invalid">
+      <mat-icon>search</mat-icon>
+    </button>
+  </mat-form-field>
+</form>
 
-  <div *ngIf="produtos.length > 0">
-    <h2>Produtos</h2>
-    <div *ngFor="let produto of produtos" class="produto-card">
-      <h3>{{ produto.name }}</h3>
-      <img [src]="produto.processedImg" alt="Imagem do Produto" class="produto-imagem">
-      <!-- Outros dados do produto -->
-      <button (click)="adicionarAoCarrinho(produto.id)">Adicionar ao Carrinho</button>
+<div class="product-list">
+  <mat-card class="product-card" *ngFor="let product of products">
+    <div class="product-image">
+      <img [src]="product.imageUrl" alt="product-image" *ngIf="product.imageUrl">
     </div>
-
-  </div>
+    <div class="product-details">
+      <h2 class="product-name" routerLink="/customer/product/{{product.id}}">{{product.name}}</h2>
+      <p class="product-description">{{product.description}}</p>
+      <mat-divider></mat-divider>
+      <div class="product-info">
+        <div class="info-row">
+          <span class="info-label">Preço:</span>
+          <span class="info-value">R$ {{product.price}}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Categoria:</span>
+          <span class="info-value">{{product.categoryName}}</span>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="actions">
+        <button mat-raised-button color="primary" class="update-button" (click)="addToCart(product.id)">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  </mat-card>
 </div>

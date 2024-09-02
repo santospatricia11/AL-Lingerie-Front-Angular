@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -9,8 +10,8 @@ import { CustomerService } from '../../services/customer.service';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  produtos: any[] = [];
-  formularioBuscaProduto!: FormGroup;
+  products: any[] = [];
+  searchProductForm!: FormGroup;
 
   constructor(
     private customerService: CustomerService,
@@ -19,46 +20,51 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.obterTodosProdutos();
-    this.formularioBuscaProduto = this.fb.group({
-      titulo: [null, [Validators.required]],
+    this.getAllProducts();
+    this.searchProductForm = this.fb.group({
+      title: [null, [Validators.required]],
     });
   }
 
-  obterTodosProdutos() {
-    this.produtos = [];
+  getAllProducts() {
+    this.products = [];
     this.customerService.getAllProducts().subscribe((res) => {
-      console.log('Produtos recebidos:', res); // Verifique a resposta no console
-      res.forEach((element: any) => {
-        // Supondo que o campo que contém o link da imagem seja `imageUrl`
-        element.processedImg = element.imageUrl; // Use o link direto da imagem
-        this.produtos.push(element);
+      res.forEach((element) => {
+        element.processedImg = '' + element.byteImg;
+        this.products.push(element);
       });
     });
   }
 
-  enviarFormulario() {
-    this.produtos = [];
-    const titulo = this.formularioBuscaProduto.get('titulo')!.value;
-    this.customerService.getAllProductsByName(titulo).subscribe((res) => {
-      console.log('Produtos encontrados:', res); // Verifique a resposta no console
-      res.forEach((element: any) => {
-        // Supondo que o campo que contém o link da imagem seja `imageUrl`
-        element.processedImg = element.imageUrl; // Use o link direto da imagem
-        this.produtos.push(element);
+  submitForm() {
+    this.products = [];
+    const title = this.searchProductForm.get('title')!.value;
+    this.customerService.getAllProductsByName(title).subscribe((res) => {
+      res.forEach((element) => {
+        element.processedImg = '' + element.byteImg;
+        this.products.push(element);
       });
     });
   }
 
-  adicionarAoCarrinho(id: any) {
-    this.customerService.addToCart(id).subscribe((res) => {
-      this.snackbar.open(
-        'Produto adicionado ao carrinho com sucesso!',
-        'Fechar',
-        {
-          duration: 5000,
+  addToCart(productId: number) {
+    this.customerService.addToCart(productId).subscribe({
+      next: (response) => {
+        console.log('Product added to cart:', response);
+        // Atualizar a UI para refletir o sucesso
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('Error details:', error);
+        console.error('Error status:', error.status);
+        console.error('Error message:', error.message);
+        
+        if (error.status === 409) {
+          alert('Produto já está no carrinho.');
+        } else {
+          alert('Erro ao adicionar o produto ao carrinho.');
         }
-      );
+      },
     });
   }
+  
 }

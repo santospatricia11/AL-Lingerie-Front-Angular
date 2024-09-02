@@ -121,4 +121,5 @@ export class CustomerService {
       'Bearer' + UserStorageService.getToken()
     );
   }
+ 
 }
