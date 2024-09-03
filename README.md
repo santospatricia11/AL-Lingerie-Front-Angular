@@ -24,7 +24,7 @@
 
 ### Banco de Dados
 
-- **PostgresSQL**: Um sistema de gerenciamento de banco de dados relacional para armazenar dados de produtos, usuários e pedidos.
+- **PostgreSQL**: Um sistema de gerenciamento de banco de dados relacional para armazenar dados de produtos, usuários e pedidos.
 
 ## Repositório Backend
 
