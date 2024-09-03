@@ -27,20 +27,23 @@ export class PostProductFaqComponent {
       })
     }
 
-    postFAQ(){
-      this.adminService.postFAQ(this.productId,this.FAQForm.value).subscribe(res=>{
-        if(res.id!=null){
-          this.snackbar.open('FAQ posted successfully','Close',{
-            duration:5000
-          });
-          this.router.navigateByUrl('admin/dashboard');
-        }else{
-          this.snackbar.open("something went wrong !!",'Close',{
-            duration:5000,
-            panelClass:'error-snackbar'
-          })
+    postFAQ(): void {
+      console.log('Posting FAQ:', this.FAQForm.value);
+      this.adminService.postFAQ(this.productId, this.FAQForm.value).subscribe({
+        next: (res) => {
+          console.log('Response:', res);
+          if (res.id != null) {
+            this.snackbar.open('FAQ posted successfully', 'Close', { duration: 5000 });
+            this.router.navigateByUrl('admin/dashboard');
+          } else {
+            this.snackbar.open('Something went wrong !!', 'Close', { duration: 5000, panelClass: 'error-snackbar' });
+          }
+        },
+        error: (err) => {
+          console.error('Error posting FAQ:', err);
+          this.snackbar.open('Error posting FAQ', 'Close', { duration: 5000, panelClass: 'error-snackbar' });
         }
-      })
+      });
     }
-
+  
 }

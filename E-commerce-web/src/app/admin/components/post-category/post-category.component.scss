@@ -47,3 +47,35 @@
         }
     }
 }
+.actions {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.actions button {
+  flex: 1;
+  margin-bottom: 10px;
+  background-color: #ff69b4; /* Rosa */
+  color: white; /* Cor do texto branca para contraste */
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background-color: #ff1493; /* Rosa mais escuro ao passar o mouse */
+}
+
+@media (max-width: 768px) {
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions button {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+}
